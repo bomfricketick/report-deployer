@@ -26,3 +26,7 @@ runs:
     - ${{ inputs.env }}
     - "--config"
     - ${{ inputs.config }}
+
+branding:
+  icon: 'bar-chart'
+  color: 'yellow'
