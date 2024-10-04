@@ -4,8 +4,8 @@ reports:
 
     environment:
       - dev:
-        workspace: "bica-dev"
-      - ver:
-        workspace: "bica-test"
+        workspace: "dev-workspace"
+      - uat:
+        workspace: "test-workspace"
       - prd:
-        workspace: "bica-SFAS"
+        workspace: "prd-workspace"
