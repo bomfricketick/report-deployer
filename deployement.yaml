@@ -1,0 +1,11 @@
+reports:
+  - name: "report1"
+    displayName: "Report 1"
+
+    environment:
+      - dev:
+        workspace: "bica-dev"
+      - ver:
+        workspace: "bica-test"
+      - prd:
+        workspace: "bica-SFAS"
