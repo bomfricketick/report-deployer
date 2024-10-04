@@ -1,31 +1,49 @@
-from urllib import parse
+import urllib.parse
 import requests
+
+def get_imports(workspace_id: str, access_token: str):
+    url = f'https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/imports'
+
+    response = requests.get(
+        url = url,
+        headers={
+            'Authorization': f'Bearer {access_token}'
+        }
+    )
+
+    if response.status_code != 200:
+        raise Exception(
+            {
+                'error': {
+                    'status_code': response.status_code,
+                    'message': response.content,
+                    'url': response.url,
+                }
+            }
+        )
+
+    return response.json()
 
 def deploy (
     workspace_id: str,
-    report_name: str,
+    file_name: str,
     file_suffix: str,
     access_token: str,
-    file_binary: bytes
+    file_binary: bytes,
+    nameConflict: str,
+    sub_folder: str = None
     ):
-
-    if file_suffix == 'pbix':
-        file_name = f'{report_name}.pbix'
-    if file_suffix == 'rdl':
-        file_name = f'{report_name}.rdl'
-
-    print(f'Uploading {report_name} to workspace {workspace_id}...')
+    escaped_file_name = f"{urllib.parse.quote(file_name)}{'.rdl' if file_suffix == 'rdl' else ''}"
     url = (
         f'https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/imports?'
-        f'datasetDisplayName={parse.quote(file_name)}&'
-        f'nameConflict={"CreateOrOverwrite" if file_suffix == "pbix" else "Overwrite"}'
+        f'datasetDisplayName={escaped_file_name}'
+        f'&nameConflict={nameConflict}{"&subfolderObjectId=" + sub_folder if sub_folder else ""}'
     )
 
     response = requests.post(
         url = url,
         headers={
-            'Authorization': f'Bearer {access_token}',
-            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {access_token}'
         },
         files={
             'file': file_binary,

@@ -1,0 +1,28 @@
+name: 'Power BI Report Deploy'
+description: 'Deploy reports (.pbix and .rpd) to Power BI workspaces'
+inputs:
+  files:
+    description: 'Comma-separated list of files to deploy'
+    required: true
+  separator:
+    description: 'Separator for file list'
+    required: false
+    default: ','
+  config:
+    description: 'Path to the configuration file'
+    required: true
+  env:
+    description: 'Environment/workspace to deploy to'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - "--files"
+    - ${{ inputs.files }}
+    - "--separator"
+    - ${{ inputs.separator }}
+    - "--env"
+    - ${{ inputs.env }}
+    - "--config"
+    - ${{ inputs.config }}
