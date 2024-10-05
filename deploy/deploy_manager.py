@@ -37,7 +37,7 @@ def deploy (
     url = (
         f'https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/imports?'
         f'datasetDisplayName={escaped_file_name}'
-        f'&nameConflict={nameConflict}{"&subfolderObjectId=" + sub_folder if sub_folder else ""}'
+        f'&nameConflict={nameConflict}{"&subfolderId=" + sub_folder if sub_folder else ""}'
     )
 
     response = requests.post(
