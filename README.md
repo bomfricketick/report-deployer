@@ -10,10 +10,12 @@ Example of config.yaml
 ```yaml
 reports:
   - name: "report1"
+    display_name: "Report 1"
+    dataset: "dataset1"
     environment:
       dev:
         workspace: "dev-workspace"
-        subFolder: "subfolderObjectId"
+        subfolder: "subfolderObjectId"
       uat:
         workspace: "test-workspace"
       prd:
