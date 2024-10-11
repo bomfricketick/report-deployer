@@ -2,7 +2,29 @@ import pytest
 from unittest.mock import patch, MagicMock
 from report_deployer.auth import authenticate
 from report_deployer.workspace import get_workspace_id, get_dataset_id, get_report_id, post_import
+from report_deployer.app import parse_arguments
 
+
+def test_parse_arguments(monkeypatch):
+    test_args = [
+        '--config', 'config.yaml',
+        '--files', 'changelog.csv',
+        '--env', 'production',
+        '--log-level', 'DEBUG',
+        '--log-file', 'app.log',
+        '--dry-run'
+    ]
+    monkeypatch.setattr('sys.argv', ['app.py'] + test_args)
+    args = parse_arguments()
+
+    assert args.config == 'config.yaml'
+    assert args.files == 'changelog.csv'
+    assert args.env == 'production'
+    assert args.log_level == 'DEBUG'
+    assert args.log_file == 'app.log'
+    assert args.dry_run is True
+
+    
 def setup_mock_response(mock_get, json_data):
     mock_response = MagicMock()
     mock_response.json.return_value = json_data
